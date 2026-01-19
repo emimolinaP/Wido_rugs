@@ -1,31 +1,47 @@
-import AuthButtons from "./AuthButtons"
-import Cart from "./Cart"
-import UserDropDown from "./UserDropDown"
+import { Link } from 'react-router';
+import Cart from './Cart'
+import './navbar.css'
 
-const Navbar  =()  => {
-    return (
-        <header>
-            <AuthButtons/>
-            <nav className="navbar bg-base-100  shadow-sm lg:rounded-box w-full">
-                <div  className="navbar-star">
-                    <a className="btn btn-ghost text-xl" to="/">
-                        Wido Rugs
-                    </a>
+const Navbar = () => {
+  const isAdm = false;
+  return (
+    <div className="navbar shadow-md w-full">
+      <div className="flex-none">
+        <div className="dropdown">
+          <label tabIndex={0} className="btn btn-square btn-ghost">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="inline-block h-5 w-5 stroke-current"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </label>
 
-                </div>
-                <div className="navbar-end gap-3 w-full">
-                    <a className="btn btn-primary">
-                        Dashboard
-                    </a>
-                    <Cart/>
-                    <UserDropDown/>
-                </div>
-            </nav>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-[20] p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            <li><a>Pedir mi alfombra!</a></li>
+            <li><a></a></li>
+            <li><Link to={"/login"}>Login</Link></li>
+            {isAdm && <li><Link to={"/administracion"}>Administración</Link></li>}
+          </ul>
+        </div>
+      </div>
 
+      <div className="flex-1">
+        <Link className="titulo btn btn-ghost text-5xl text-green-800 font-serif" to="/">Wido Rugs</Link>
+      </div>
+      <Cart/>
+    </div>
+  );
+};
 
-        </header>
-
-
-    )
-}
-export default Navbar
+export default Navbar;

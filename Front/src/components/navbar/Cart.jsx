@@ -1,3 +1,4 @@
+import "./navbar.css"
 const Cart = () => {
     return (
         <>
@@ -6,7 +7,7 @@ const Cart = () => {
                     <div
                         tabIndex={0}
                         role="button"
-                        className="btn btn-success btn-circle"
+                        className="btn-carrito btn btn-success btn-circle"
                     >
                         <div className="indicator">
                             <svg
@@ -29,12 +30,12 @@ const Cart = () => {
                             </span>
                         </div>
                     </div>
-                    <div tabIndex={0} className="card  card-compact dropdown-content bg-base-100z-[1000] mt-3w w-52 shadow">
+                    <div tabIndex={0} className="carrito card z-20 card-compact dropdown-content bg-base-100z-[1000] mt-3w w-52 shadow">
                         <div className="card-body">
                             <span className="text-lg font-bold">
                                 2 Item
                             </span>
-                            <span className="text-info">
+                            <span className="text  text-black">
                                 Subtotal: $300
                             </span>
                             <div className="card-actions">

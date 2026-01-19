@@ -3,7 +3,7 @@ import Cart from './Cart'
 import './navbar.css'
 
 const Navbar = () => {
-  const isAdm = false;
+  const isAdm = True;
   return (
     <div className="navbar shadow-md w-full">
       <div className="flex-none">

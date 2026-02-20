@@ -1,9 +1,9 @@
 import { Link } from 'react-router';
 import Cart from './Cart'
 import './navbar.css'
-
+import { useUser } from '../../context/UserContext';
 const Navbar = () => {
-  const isAdm = True;
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="navbar shadow-md w-full">
       <div className="flex-none">
@@ -31,7 +31,7 @@ const Navbar = () => {
             <li><a>Pedir mi alfombra!</a></li>
             <li><a></a></li>
             <li><Link to={"/login"}>Login</Link></li>
-            {isAdm && <li><Link to={"/administracion"}>Administración</Link></li>}
+            { user && <li><Link to={"/administracion"}>Administración</Link></li>}
           </ul>
         </div>
       </div>

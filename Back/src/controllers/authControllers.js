@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import AdmModel from '../models/AdmModel.js'
 import { registerSchema, loginSchema } from '../schemas/authSchema.js'
@@ -42,5 +43,72 @@ export const registerUser = async (req,res) => {
         //     .json({ message: 'Usuario registrado con éxito' })
     } catch (error) {
         res.json(error)
+    }
+} 
+  
+export const profile = async (req, res) => {
+    // Extraer el accessToken enviado por el cliente
+    const token = req.cookies.accessToken
+    try {
+        // Verificar o decodificar el token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+        // Buscar el usuario en la DB
+        const user = await UserModel.findById(decoded.userId)
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' })
+        }
+
+        res.status(200).json({
+            id: user._id,
+            username: user.username,
+        })
+    } catch (error) {
+        return res.status(400).json({ message: 'No autorizado' })
+    }
+}
+
+export const loginUser = async (req,res) => {
+    try{
+        const JWT_SECRET = process.env.JWT_SECRET
+        const {username,password} = loginSchema.parse(req.body)
+    
+        const user = await AdmModel.findOne({username})
+        if(!user){
+            return res.status(400).json({message:"invalido"})
+        }
+        const isPasswordvalid = await bcrypt.compare(password,user.password)
+        if(!isPasswordvalid){
+            return res.status(400).json({message: "Credencial invalide"})
+        }
+        
+        
+        const token = jwt.sign({userId: user._id,username: user.username}, JWT_SECRET,
+        {
+            expiresIn: '1h',
+        }
+    )
+
+        const userData = {
+            id:user._id,
+            username: user.username
+        }
+        res.cookie('accessToke',token,{
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite:process.env.NODE_ENV === 'production'? 'none':'lax',
+            maxAge: 60*60*1000,
+        })
+        .status(200).json(userData)
+
+
+    }catch(error){
+        if(error instanceof ZodError){
+            return res.status(400).json(error.issues.map(issue =>({message: issue.message})))
+        }
+        res.status(500).json({message:"Error al iniciar sesión",
+            error:error,
+        })
     }
 }

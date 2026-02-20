@@ -1,11 +1,9 @@
 import LoginForm from '../components/Login/LoginForm'
 import './css_style/login_style.css'
-export default function Login() {
-    const handleLogin = (data) => {
-        console.log('Login:', data)
-        // db
-    }
 
+
+export default function Login() {
+      
     return (
         <div className="background -mt-20">
             <div className="min-h-screen flex items-center justify-center px-4">
@@ -18,7 +16,7 @@ export default function Login() {
                             Accedé a tu cuenta
                         </p>
 
-                        <LoginForm onSubmit={handleLogin} />
+                        <LoginForm  />
                     </div>
                 </div>
             </div>

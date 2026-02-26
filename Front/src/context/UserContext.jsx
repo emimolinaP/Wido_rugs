@@ -13,6 +13,7 @@ export const UserContextProviver = ({ children }) => {
         try {
             setLoading(true)
             const userData = await getProfileService()
+            console.log("context",userData)
             setUserInfo(userData)
         } catch (error) {
             setUserInfo({})

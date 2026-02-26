@@ -5,6 +5,8 @@ import { Toaster } from 'react-hot-toast'
 
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Productos from './pages/Productos'
+import AdminGallery from './pages/Admin'
 function App() {
     return (
         <UserContextProviver>
@@ -12,6 +14,8 @@ function App() {
                 <Route element={<Layout />}>
                     <Route path="/" element={<Home />}></Route>
                     <Route path="/login" element={<Login />}></Route>
+                    <Route path="/rugs" element={<Productos />}></Route>
+                    <Route path="/administracion" element={<AdminGallery/>}></Route>
                 </Route>
             </Routes>
             <Toaster />

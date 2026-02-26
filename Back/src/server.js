@@ -2,17 +2,22 @@ import express from 'express'
 import { connectDB, disconnectDB } from './config/configdb.js'
 import dotenv from 'dotenv'
 import authRoutes from './routes/authRoutes.js'
+import postRoutes from './routes/postRoutes.js'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+
+
 
 dotenv.config()
 
 const app = express()
 
+
+app.use("/uploads", express.static("uploads"))
 app.use(
     cors({
         origin: process.env.FRONTEND_URL,
-        methods: ['GET,POST,PUT,DELETE,OPTIONS'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: [
             'Content-Type',
             'Authorization',
@@ -22,12 +27,14 @@ app.use(
         credentials: true,
     })
 )
-app.use( cookieParser() )
+app.use(cookieParser())
 app.use(express.json())
 
 const PORT = 3001
 
 app.use('/api/auth', authRoutes)
+
+app.use('/api/auth', postRoutes)
 
 connectDB()
     .then(() => {

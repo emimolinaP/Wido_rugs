@@ -7,3 +7,8 @@ Content-Type:  application/json
     "username": "peporro",
     "password": "ward420"
 }
+
+
+
+###logout
+POST http://localhost:3001/api/auth/logout

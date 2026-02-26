@@ -21,26 +21,26 @@ export const registerUser = async (req,res) => {
             password: hashedPassword,
         })
         console.log(newAdm)
-        res.json({message:"bieeen"})
+        
 
         // Generar un token con JWT
         // payload
-        // const token = jwt.sign({ userId: newUser._id }, JWT_SECRET, {
-        //     expiresIn: '1h',
-        // })
+        const token = jwt.sign({ userId: newAdm._id }, JWT_SECRET, {
+            expiresIn: '1h',
+        })
 
-        // console.log('NEW USER', newUser)
-        // console.log('token', token)
+        console.log('NEW USER', newAdm)
+        console.log('token', token)
 
-        // // Enviar el token como una cookie
-        // res.cookie('accessToken', token, {
-        //     httpOnly: true,
-        //     secure: process.env.NODE_ENV === 'production',
-        //     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        //     maxAge: 60 * 60 * 1000,
-        // })
-        //     .status(201)
-        //     .json({ message: 'Usuario registrado con éxito' })
+        // Enviar el token como una cookie
+        res.cookie('accessToken', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            maxAge: 60 * 60 * 1000,
+        })
+            .status(201)
+            .json({ message: 'Usuario registrado con éxito' })
     } catch (error) {
         res.json(error)
     }
@@ -48,14 +48,18 @@ export const registerUser = async (req,res) => {
   
 export const profile = async (req, res) => {
     // Extraer el accessToken enviado por el cliente
+    
     const token = req.cookies.accessToken
+    if (!token) {
+        return res.status(401).json({ message: "No token provided" })
+    }
     try {
         // Verificar o decodificar el token
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
         // Buscar el usuario en la DB
-        const user = await UserModel.findById(decoded.userId)
-
+        const user = await AdmModel.findById(decoded.userId)
+        
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado' })
         }
@@ -65,7 +69,7 @@ export const profile = async (req, res) => {
             username: user.username,
         })
     } catch (error) {
-        return res.status(400).json({ message: 'No autorizado' })
+        return res.status(401).json({ message: 'No autorizado1' })
     }
 }
 
@@ -94,7 +98,7 @@ export const loginUser = async (req,res) => {
             id:user._id,
             username: user.username
         }
-        res.cookie('accessToke',token,{
+        res.cookie('accessToken',token,{
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite:process.env.NODE_ENV === 'production'? 'none':'lax',
@@ -111,4 +115,15 @@ export const loginUser = async (req,res) => {
             error:error,
         })
     }
+}
+
+export const logout = (req,res) => {
+    res.clearCookie('accessToken',{
+        httpOnly:true,
+        secure:process.env.NODE_ENV === 'production',
+        sameSite:process.env.NODE_ENV ===' production' ? 'none':'lax'
+    })
+        .status(200)
+        .json({message:'cierre de sesión exitoso'})
+
 }

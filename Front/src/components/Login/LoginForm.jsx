@@ -17,7 +17,7 @@ const LoginForm = () => {
     })
 
     const { setUserInfo, userInfo } = useUser()
-    console.log(userInfo);
+
   
     const [showPassword, setShowPassword] = useState(false)
     const [redirect, setRedirect] = useState(false)
@@ -33,7 +33,7 @@ const LoginForm = () => {
     }
 
     if (redirect) {
-        return <Navigate to={'/administracion'} />
+        return <Navigate to={'/dashboard'} />
     }
 
     return (

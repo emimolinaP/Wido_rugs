@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { createGalleryItem } from '../services/productServices'
+import toast from 'react-hot-toast'
 const AdminGallery = () => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -14,7 +15,7 @@ const AdminGallery = () => {
             setPreview(URL.createObjectURL(file))
         }
     }
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
@@ -24,13 +25,19 @@ const AdminGallery = () => {
         formData.append('description', description)
         formData.append('image', image)
 
-        await createGalleryItem(formData)
-
-        setTitle('')
-        setDescription('')
-        setImage(null)
-        setPreview(null)
-        setLoading(false)
+        try {
+            await createGalleryItem(formData)
+            toast.success('Post subido exitosamente')
+            setTitle('')
+            setDescription('')
+            setImage(null)
+            setPreview(null)
+            setLoading(false)
+        } catch (error) {
+            console.log(error)
+            toast.error('Error al subir post')
+            setLoading(false)
+        }
     }
 
     return (

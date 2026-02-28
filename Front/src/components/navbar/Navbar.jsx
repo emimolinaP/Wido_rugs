@@ -54,7 +54,7 @@ const Navbar = () => {
                         )}
                         {!loading && userInfo?.username && (
                             <li>
-                                <Link to={'/administracion'}>
+                                <Link to={'/dashboard'}>
                                     Administración
                                 </Link>
                             </li>
